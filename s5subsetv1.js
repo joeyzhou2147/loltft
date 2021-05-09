@@ -1,8 +1,3 @@
-main();//print all 8-length subsets sorted by total cost
-function main(){
-
-}
-
 
 class Car {
   constructor(brand) {
@@ -69,8 +64,6 @@ new Model("魔女", "复苏",1),
 new Model("小恶", "重骑",1),
 new Model("圣光", "征服",1),
 new Model("丧尸", "征服",1)];
-Alist = new Set(["破败","黑夜","魔女","小恶","屠龙","丧尸","圣光","黎明","神佑","龙族","铁甲","永猎","复生"])
-Blist = new Set(["刺客","游侠","斗士","征服","复苏","神谕","骑士","法师","神盾","秘术","重骑","大魔","神王","驯龙"])
 cost2 = [
 new Model("魔女", "刺客",2),
 new Model("黎明", "复苏",2),
@@ -84,6 +77,17 @@ new Model("黑夜", "重骑",2),
 new Model("破败", "重骑",2),
 new Model("圣光", "神谕",2),
 new Model("破败", "骑士",2),
+new Model("龙族", "斗士",2),
+];
+cost3 = [
+];
+cost4 = [
+];
+cost5 = [
+];
+Alist = new Set(["破败","黑夜","魔女","小恶","屠龙","丧尸","圣光","黎明","神佑","龙族","铁甲","永猎","复生"])
+Blist = new Set(["刺客","游侠","斗士","征服","复苏","神谕","骑士","法师","神盾","秘术","重骑","大魔","神王","驯龙"])
+cost6 = [
 new Model("龙族", "斗士",2),
 ];
 all = cost1;
@@ -128,13 +132,20 @@ function test(){
 */
 function lvl4(){
 	arr = cost1.concat(cost2)
-    coms = [...new Set(subsetsK(arr, 5).map((a)=> sum(a)))];
+    coms = [...new Set(subsetsK(arr, 8).map((a)=> sum(a)))];
     return coms.map((a)=> a.split(",")).filter((a)=>a.length>3).sort((a, b)=>{
         return b[0]*1 - a[0]*1 || b[1]*1 - a[1]*1;
     });
 }
+function lvl8(size=8){
+	arr = cost1.concat(cost2).concat(cost3).concat(cost4).concat(cost5).concat(cost6)
+    coms = [...new Set(subsetsK(arr, size).map((a)=> sum(a)))];
+    return coms.map((a)=> a.split(",")).filter((a)=>a[0]-size>0).sort((a, b)=>{
+        return b[0]*1 - a[0]*1 || b[1]*1 - a[1]*1;
+    });
+}
 
-function subsets(nums) {
+function subsetsOLD(nums) {
 	const powerset = [];
 	generatePowerset([], 0);
 
@@ -147,7 +158,7 @@ function subsets(nums) {
 
 	return powerset;
 }
-function subsetsK(nums, k=7) {
+function subsetsOLDK(nums, k=7) {
 	const powerset = [];
 	generatePowerset([], 0);
 
@@ -159,4 +170,19 @@ function subsetsK(nums, k=7) {
 	}
 
 	return powerset.filter((a)=>a.length==k);
+}
+function subsetsK(nums, k = 7){
+    let res = []
+    const powSize = Math.pow(2, nums.length)
+
+    for (let i = 0; i < powSize; i++) {
+        let set = []
+        for (let j = 0; j < nums.length; j++) {
+            if ((i & (1 << j)) > 0) {
+                set.push(nums[j])
+            }
+        }
+        if(set.length == k)res.push(set)
+    }
+    return res
 }
